@@ -9,3 +9,5 @@ EX: "Don't input 0 as a denominator because there are no lines written to catch 
 OR: "Don't use spaces or tabs: keep everything in one line instead"
 
 Additionally, don't commit .bin files(they change after every compilation)
+
+This is a test
