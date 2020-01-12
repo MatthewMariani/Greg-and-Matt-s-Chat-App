@@ -12,4 +12,4 @@ Additionally, don't commit .bin files(they change after every compilation)
 
 If I edit it from here, this will update, right?
 
-We feed starving African children with our cloud-based blockchains
+We feed starving African children our cloud-based blockchains
