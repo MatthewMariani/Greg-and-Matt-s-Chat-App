@@ -17,6 +17,7 @@ class main {
     public static void main(String[] args) throws IOException {
         System.out.println("works");
         final ServerSocket serv = new ServerSocket(8009);
+        while(true){
         final Socket usr = serv.accept();
         System.out.println("connected");
         final OutputStream outputStream = usr.getOutputStream();
@@ -32,6 +33,7 @@ class main {
         out.println(content);
         out.flush();
         System.out.println("sent");
+    }
 
     }
 
