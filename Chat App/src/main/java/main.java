@@ -11,13 +11,14 @@ class main {
         // does it really
         
         try {
-            ServerSocket serv = new ServerSocket(50000);
+            ServerSocket serv = new ServerSocket(8080);
             Socket usr = serv.accept();
             InputStream input = usr.getInputStream();
             byte[] message = new byte[25];
             while(true)
             {
 
+                
                 //System.out.println(input.available());
                 if(input.available()>0)
                 {
