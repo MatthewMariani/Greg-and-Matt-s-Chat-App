@@ -10,11 +10,14 @@ import java.net.Socket;
 import java.net.http.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 class main {
-
+    public static ArrayList<Socket> currentSockets;
     public static void main(String[] args) throws IOException {
+        currentSockets= new ArrayList<Socket>();
         System.out.println("works");
         final ServerSocket serv = new ServerSocket(8009);
         while(true){
@@ -37,21 +40,4 @@ class main {
 
     }
 
-    static String readFile(File input) {
-
-        String out = "";
-        
-        try {
-            Scanner temp = new Scanner(input);
-            while(temp.hasNextLine())
-            {
-                out+=temp.nextLine()+"\n";
-            }
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return out;
-
-    }
 }
