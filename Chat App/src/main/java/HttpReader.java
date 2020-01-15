@@ -17,7 +17,13 @@ public class HttpReader {
         headerContents = new HashMap<String, String>();
 
         String current = reader.nextLine();
-        headerContents.put("request",current);
+        String[] request = current.split(" ");
+        String[] protocol = request[2].split("/");
+        headerContents.put("request",request[0]);
+        headerContents.put("protocol", protocol[0]);
+        headerContents.put("version", protocol[1]);
+        request = null;
+        protocol = null;
         current = reader.nextLine();
         for (int i = 0; !current.isBlank(); i++) {
             String[] delim = current.split(": ");
@@ -25,8 +31,10 @@ public class HttpReader {
             headerContents.put(delim[0],delim[1]);
             current = reader.nextLine();
         }
+        reader.close();
 
     }
+    //just a temporary test to see if it parses correctly
     public static void main(String[] args) {
         String req = "GET / HTTP/1.1\r\n"        
         +"Host: localhost:8009\r\n"  
@@ -42,6 +50,6 @@ public class HttpReader {
         +"Accept-Language: en-US,en;q=0.9\r\n"
         +"\r\n";
         HttpReader stuff = new HttpReader(req);
-        System.out.println(stuff.headerContents.get("User-Agent"));
+        System.out.println(stuff.headerContents.get("request"));
     }
 }

@@ -16,27 +16,20 @@ import java.util.Scanner;
 
 class main {
     public static ArrayList<Socket> currentSockets;
+    public static SocketHandler[] handlers;
     public static void main(String[] args) throws IOException {
         currentSockets= new ArrayList<Socket>();
-        System.out.println("works");
-        final ServerSocket serv = new ServerSocket(8009);
-        while(true){
-        final Socket usr = serv.accept();
-        System.out.println("connected");
-        final OutputStream outputStream = usr.getOutputStream();
-        final PrintWriter out = new PrintWriter(outputStream);
-        File index = new File("Chat App\\files\\index.html");
-        out.println("HTTP/1.0 200 OK");
-        //out.print("Content-Type: text/html");
-        String content = Files.readString(Paths.get("Chat App\\files\\index.html"));
-        out.println("Content-Length: "+content.length());
-        out.println("");
+        System.out.println("started");
+        ServerSocket serv = new ServerSocket(8009);
+        CustomListener listener = new CustomListener(serv);
+        Thread listener1 = new Thread(listener);
+        SocketHandler handler = new SocketHandler();
+        //Thread handler1 = new Thread(handler);
+        //handlers= new SocketHandler[1];
+        //handlers[0]=handler;
         
-        System.out.println(content);
-        out.println(content);
-        out.flush();
-        System.out.println("sent");
-    }
+        listener1.start();
+        //handler1.start();
 
     }
 
