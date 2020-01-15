@@ -17,21 +17,16 @@ public class CustomListener implements Runnable {
 
     @Override
     public void run() {
-        while(true)
+        while(main.running)
         {
         try {
             if (active) {
                 Socket temp = socket.accept();
-                System.out.println("new connection: "+temp.getInetAddress()+":"+temp.getPort());
-                String content = Files.readString(Paths.get("Chat App\\files\\index.html"));
-                String header = "HTTP/1.0 200 OK\r\n"
-                +"Content-Type: text/html\r\n"
-                +"Content-Length: "+content.length()+"\r\n"
-                +"\r\n";
-                header+=content;
-                byte[] output = header.getBytes();
-                temp.getOutputStream().write(output);
-                temp.getOutputStream().flush();
+                ClientConnection connection = new ClientConnection(temp);
+                System.out.println("new connection: "+connection.toString());
+                main.handlers[0].addConnection(connection);
+                System.out.println("added connection");
+
                 //main.currentSockets.add(temp);
                 //hand off to a handler
                 //main.handlers[0].addConnection(temp);

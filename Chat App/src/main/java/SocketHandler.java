@@ -11,11 +11,13 @@ import java.util.Arrays;
 // work as medium for send/requesting info, handle new ones
 class SocketHandler implements Runnable {
     int numConnections;
-    ArrayList<Socket> connections;
+    ArrayList<ClientConnection> connections;
+    ArrayList<ClientConnection> connectionBuffer;
     
     public SocketHandler()
     {
-        connections= new ArrayList<Socket>();
+        connections= new ArrayList<ClientConnection>();
+        connectionBuffer = new ArrayList<ClientConnection>();
         numConnections=connections.size();
     }
 
@@ -24,9 +26,9 @@ class SocketHandler implements Runnable {
     }
 
     // establish new connections
-    void addConnection(Socket e)
+    void addConnection(ClientConnection e)
     {
-        connections.add(e);
+        connectionBuffer.add(e);
         //send to http handler
         //send httpmessage
     }
@@ -35,11 +37,9 @@ class SocketHandler implements Runnable {
     void flushDeadConnections()
     {
         for (int i = 0; i < connections.size(); i++) {
-            if(!connections.get(i).isConnected())
+            if(!connections.get(i).isAlive())
             {
-                try {
                 connections.get(i).close();
-                } catch (IOException e) {}
                 connections.remove(i);
                 i--;
                 
@@ -49,48 +49,31 @@ class SocketHandler implements Runnable {
 
     @Override
     public void run() {
-        //System.out.println("SocketHandler running");
-        boolean allActive = true;
-        while(true)
+        System.out.println("SocketHandler running");
+        
+        while(main.running)
         {
 
             //System.out.println("socket handler work:"+connections.size());
-            System.out.println(connections.size());
-            for (int i = 0; i < connections.size();i++) {
-                System.out.println("working on: "+connections.get(i).getInetAddress()+":"+connections.get(i).getPort());
-                try{
+            //dont remove this system.out.print("") below. It shouldn't break the program, but it does, for some odd reason. I tried to figure it out but I can't give up. 
+            System.out.print("");
 
-                    //InputStream input = socket.getInputStream();
-                   // if(input.available()>0)
-                    //{
-                        //String in = new String(input.readAllBytes());
-                        //HttpReader request = new HttpReader(in);
-                        //if(request.headerContents.get("request").equals("GET"))
-                        //{
-                            String content = Files.readString(Paths.get("Chat App\\files\\index.html"));
-                            String header = "HTTP/1.0 200 OK\r\n"
-                            +"Content-Type: text/html\r\n"
-                            +"Content-Length: "+content.length()+"\r\n"
-                            +"\r\n";
-                            header+=content;
-                            byte[] output = header.getBytes();
-                            connections.get(i).getOutputStream().write(output);
-                            connections.get(i).close();
-                            connections.remove(i);
-                            i--;
-                            
-                       // }
-                    //}
-
-
-                }catch(Exception e){
-                    e.printStackTrace();
-                    connections.remove(i);
-                    i--;
-                    
-                    
+            for (ClientConnection clientConnection : connections) {
+                System.out.println(clientConnection);
+                if(clientConnection.firstTime())
+                {
+                    try {
+                        clientConnection.sendHTTP("Chat App\\files\\index.html");
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                        System.out.println("diagnosis");
+                    }
                 }
             }
+            connections.addAll(connectionBuffer);
+            //flushDeadConnections();
+            connectionBuffer.clear();
         }
 
 
