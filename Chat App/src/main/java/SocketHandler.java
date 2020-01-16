@@ -59,21 +59,58 @@ class SocketHandler implements Runnable {
             System.out.print("");
 
             for (ClientConnection clientConnection : connections) {
-                System.out.println(clientConnection);
-                if(clientConnection.firstTime())
+                //System.out.println(clientConnection);
+                try {
+                
+                int aval = clientConnection.getInputStream().available();
+                //System.out.println(aval);
+                if(aval>0)
                 {
-                    try {
-                        clientConnection.sendHTTP("Chat App\\files\\index.html");
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                        System.out.println("diagnosis");
-                    }
+                        //System.out.println("HALT1");
+                        //get the message
+                        byte[] temp = new byte[aval];
+                        clientConnection.getInputStream().read(temp);
+                        
+                        //System.out.println("HALT1.5");
+                        //do I need ot clear a bufferdinputstream after being read/how do inputstreams work or read
+                        //System.out.println(temp);
+                        String buffer = new String(temp);
+                        //System.out.println(buffer);
+                        HttpReader message = new HttpReader(buffer);
+                        String path = main.URIDictionary.get(message.headerContents.get("URI"));
+                        //System.out.println("HALT2");
+                        System.out.println(path);
+                        if(path==null)
+                            path=main.URIDictionary.get("/");
+                        System.out.println(message.headerContents.get("URI"));
+                        String req = message.headerContents.get("request");
+                        //System.out.println("HALT3");
+                        //System.out.println(req);
+                        
+                        switch(req)
+                        {
+                            case "GET":
+                                System.out.println("GET response to: "+clientConnection.toString());
+                                clientConnection.sendHTTP(path);
+                                break;
+                            default:
+                                System.out.println("ERROR");
+                                clientConnection.sendHTTP("Chat App\\files\\404Error.html");
+                                break;
+                        }
+                        
+                    
                 }
+
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                System.out.println("diagnosis");
             }
-            connections.addAll(connectionBuffer);
-            //flushDeadConnections();
-            connectionBuffer.clear();
+            }
+            connections.addAll(main.connectionBuffer);
+            flushDeadConnections();
+            main.connectionBuffer.clear();
         }
 
 

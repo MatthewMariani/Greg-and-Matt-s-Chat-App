@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 /**
  * HttpReader
  */
+
 public class HttpReader {
     String content;
     public Map<String, String> headerContents;
@@ -21,6 +22,7 @@ public class HttpReader {
         String[] request = current.split(" ");
         String[] protocol = request[2].split("/");
         headerContents.put("request", request[0]);
+        headerContents.put("URI", request[1]);
         headerContents.put("protocol", protocol[0]);
         headerContents.put("version", protocol[1]);
         request = null;
@@ -35,7 +37,10 @@ public class HttpReader {
         reader.close();
 
     }
-
+    // public URI getURI()
+    // {
+    //     String
+    // }
     // just a temporary test to see if it parses correctly
     public static void main(String[] args) {
         String req = "GET / HTTP/1.1\r\n" + "Host: localhost:8009\r\n" + "Connection: keep-alive\r\n"

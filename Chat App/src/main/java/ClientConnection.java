@@ -1,3 +1,4 @@
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -12,6 +13,7 @@ import java.util.Map.Entry;
  */
 public class ClientConnection {
     Socket socket;
+    BufferedInputStream streamInput;
     String protocol;
     boolean firstContact;
 
@@ -19,6 +21,12 @@ public class ClientConnection {
         firstContact = true;
         this.socket = socket;
         protocol = "HTTP";
+        try {
+            streamInput = new BufferedInputStream(socket.getInputStream());
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     public String toString() {
@@ -29,12 +37,12 @@ public class ClientConnection {
         return socket.getOutputStream();
     }
 
-    public InputStream getInputStream() throws IOException {
-        return socket.getInputStream();
+    public BufferedInputStream getInputStream() throws IOException {
+        return streamInput;
     }
 
     public boolean isAlive() {
-        boolean out = socket.isClosed()||!socket.isConnected();
+        boolean out = !socket.isClosed()||socket.isConnected();
         return out;
     }
 
@@ -43,6 +51,10 @@ public class ClientConnection {
         return firstContact;
     }
 
+    public boolean hasData() throws IOException
+    {
+        return socket.getInputStream().available()>0;
+    }
     public void close() {
 
     }

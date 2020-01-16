@@ -1,24 +1,21 @@
-package main.java;
 
 public class user
 {
     //instance variables
-    private ID ID;
+    private String ID;
     private Location location;
     private String accessLevel;
-    private Zone zone;
 
     //constructor
-    public user(ID uID, Location loc, String acLvl)
+    public user(String uID, Location loc, String acLvl)
     {
         ID = uID;
         location = loc;
         accessLevel = acLvl;
-        zone = location.findZone();
     }
 
     //getters
-    public ID getID()
+    public String getID()
     {
         return ID;
     }

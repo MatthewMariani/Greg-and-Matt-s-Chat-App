@@ -1,6 +1,6 @@
-package main.java;
 
-public class location
+
+public class Location
 {
     private float longitude;
     private float latitude;
@@ -8,7 +8,7 @@ public class location
     Zone zone;
 
     //constructor?
-    public location()
+    public Location()
     {
 
     }

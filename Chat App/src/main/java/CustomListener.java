@@ -1,3 +1,4 @@
+  
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -24,7 +25,7 @@ public class CustomListener implements Runnable {
                 Socket temp = socket.accept();
                 ClientConnection connection = new ClientConnection(temp);
                 System.out.println("new connection: "+connection.toString());
-                main.handlers[0].addConnection(connection);
+                main.connectionBuffer.add(connection);
                 System.out.println("added connection");
 
                 //main.currentSockets.add(temp);
