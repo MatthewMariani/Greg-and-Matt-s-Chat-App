@@ -66,27 +66,15 @@ class SocketHandler implements Runnable {
                 //System.out.println(aval);
                 if(aval>0)
                 {
-                        //System.out.println("HALT1");
-                        //get the message
                         byte[] temp = new byte[aval];
                         clientConnection.getInputStream().read(temp);
-                        
-                        //System.out.println("HALT1.5");
-                        //do I need ot clear a bufferdinputstream after being read/how do inputstreams work or read
-                        //System.out.println(temp);
                         String buffer = new String(temp);
-                        //System.out.println(buffer);
                         HttpReader message = new HttpReader(buffer);
                         String path = main.URIDictionary.get(message.headerContents.get("URI"));
-                        //System.out.println("HALT2");
-                        System.out.println(path);
                         if(path==null)
-                            path=main.URIDictionary.get("/");
+                            path=main.URIDictionary.get("ERROR");
                         System.out.println(message.headerContents.get("URI"));
                         String req = message.headerContents.get("request");
-                        //System.out.println("HALT3");
-                        //System.out.println(req);
-                        
                         switch(req)
                         {
                             case "GET":

@@ -4,3 +4,5 @@ Chat App\\files\\index.html
 Chat App\\files\\index.html
 /second
 Chat App\\files\\second.html
+ERROR
+Chat App\\files\\404Error.html
