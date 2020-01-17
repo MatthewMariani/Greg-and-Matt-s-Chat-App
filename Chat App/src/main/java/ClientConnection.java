@@ -1,10 +1,12 @@
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -59,14 +61,21 @@ public class ClientConnection {
 
     }
 
-    public void send(String in) throws IOException {
+    public void send(String in) throws IOException 
+    {
         byte[] messageBlob = in.getBytes();
-        socket.getOutputStream().write(messageBlob);
+        send(messageBlob);
+        
+    }
+
+    public void send(byte[] in) throws IOException
+    {
+        socket.getOutputStream().write(in);
         socket.getOutputStream().flush();
         firstContact=false;
     }
 
-    public void sendHTTP(String webpagePath, HashMap<String, String> args) throws IOException
+    public void sendWebpage(String webpagePath, HashMap<String, String> args) throws IOException
     {
         String content = Files.readString(Paths.get(webpagePath));
         String header = "HTTP/1.0 200 OK\r\n"
@@ -80,16 +89,32 @@ public class ClientConnection {
         send(header+content);
         
     }
-    public void sendHTTP(String webpagePath) throws IOException
+    public void sendWebpage(String webpagePath) throws IOException
     {
         String content = Files.readString(Paths.get(webpagePath));
+        
         String header = "HTTP/1.0 200 OK\r\n"
         +"Content-Type: text/html\r\n"
         +"Content-Length: ";
         header+=content.length()+"\r\n";
         header+="\r\n";
+
         send(header+content);
         
     }
-    
+    public void sendICO(String webpagePath) throws IOException
+    {
+        //File image = new File(webpagePath);
+        byte[] imageData = Files.readAllBytes(Paths.get(webpagePath));
+        String header = "HTTP/1.0 200 OK\r\n"
+        +"Content-Type: image/apng\r\n"
+        +"Content-Length: "+
+        imageData.length+"\r\n\r\n";
+        int aLen = header.length();
+        int bLen = imageData.length;
+        byte[] output = new byte[aLen+bLen];
+        System.arraycopy(header.getBytes(), 0, output, 0, aLen);
+        System.arraycopy(imageData, 0, output, aLen, bLen);
+        send(output);
+    }
 }

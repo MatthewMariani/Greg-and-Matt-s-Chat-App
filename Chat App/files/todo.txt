@@ -5,6 +5,10 @@ Todo List for Greg:
     b. killing via vscode integrated terminal crash/hangs vscode
 2. Base message response of incoming request
 3. Add URI support for more webpages + security manifest
-4. Add websocket/non-GET HTTP message capability
-5. Add cookies
-6. Add dynamic page scripting (PHP?)
+4. non-GET HTTP message capability
+--- DONE ^ ---
+
+5. add https support
+4. Add websocket capability
+6. Add cookies
+7. Add dynamic page scripting (PHP?)

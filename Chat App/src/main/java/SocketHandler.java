@@ -79,13 +79,25 @@ class SocketHandler implements Runnable {
                         {
                             case "GET":
                                 System.out.println("GET response to: "+clientConnection.toString());
-                                clientConnection.sendHTTP(path);
+                                System.out.println(path);
+                                switch(main.typeDictionary.get(path))
+                                {
+                                    case "image/apng":
+                                        clientConnection.sendICO(path);
+                                        break;
+                                    default:
+                                        clientConnection.sendWebpage(path);
+                                        break;
+                                }
+                                //System.out.println("done");
+                                
                                 break;
                             default:
                                 System.out.println("ERROR");
-                                clientConnection.sendHTTP("Chat App\\files\\404Error.html");
+                                clientConnection.sendWebpage("Chat App\\files\\404Error.html");
                                 break;
                         }
+                        //System.out.println("done2");
                         
                     
                 }

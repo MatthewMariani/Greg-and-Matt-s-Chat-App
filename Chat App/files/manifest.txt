@@ -1,8 +1,18 @@
 /
 Chat App\\files\\index.html
+text/html
 /index.html
 Chat App\\files\\index.html
+text/html
 /second
 Chat App\\files\\second.html
+text/html
 ERROR
 Chat App\\files\\404Error.html
+text/html
+/favicon.ico
+Chat App\\files\favicon.png
+image.apng
+/webpage
+Chat App\\files\\webpageMockup-_1_-_1_.html
+text/html

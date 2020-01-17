@@ -14,20 +14,24 @@ class main {
     public static volatile ArrayList<ClientConnection> connectionBuffer;
     public static boolean running=true;
     public static volatile Map<String,String> URIDictionary;
+    public static volatile Map<String,String> typeDictionary;
     //public static volatile String test = "empty";
     public static void main(String[] args){
         //currentSockets= new ArrayList<Socket>();
         connectionBuffer=new ArrayList<ClientConnection>();
         URIDictionary = new HashMap<String,String>();
-        
+        typeDictionary = new HashMap<String,String>();
         try {
             Scanner URIputter = new Scanner(Paths.get("Chat App/files/manifest.txt"));
             while(URIputter.hasNextLine())
             {
                 String key = URIputter.nextLine();
                 String value = URIputter.nextLine();
+                String type = URIputter.nextLine();
                 URIDictionary.put(key,value);
+                typeDictionary.put(value,type);
             }
+            URIputter.close();
         } catch (IOException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
@@ -40,9 +44,11 @@ class main {
         CustomListener listener2 = new CustomListener(serv);
         Thread listener1 = new Thread(listener2);
         SocketHandler handler = new SocketHandler();
-        Thread handler1 = new Thread(handler);
-        
-        handler1.start();
+        SocketHandler handler2 = new SocketHandler();
+        Thread handlerT = new Thread(handler);
+        Thread handler2T = new Thread(handler2);
+        handlerT.start();
+        //handler2T.start();
         //handlers= new SocketHandler[1];
         //handlers[0]=handler;
         
