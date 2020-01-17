@@ -17,6 +17,7 @@ import java.util.Scanner;
 class main {
     public static ArrayList<Socket> currentSockets;
     public static void main(String[] args) throws IOException {
+
         currentSockets= new ArrayList<Socket>();
         System.out.println("works");
         final ServerSocket serv = new ServerSocket(8009);

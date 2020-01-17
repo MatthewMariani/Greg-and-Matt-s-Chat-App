@@ -43,5 +43,4 @@ public class user
     {
         accessLevel = newAL;
     }
-
 }
