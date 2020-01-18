@@ -10,5 +10,11 @@ Todo List for Greg:
 
 5. add https support
 4. Add websocket capability
-6. Add cookies
+6. Add cookies < WORKING
 7. Add dynamic page scripting (PHP?)
+
+---- ---- ----
+
+1. Learn SQL
+2. design SQL handler - buffer and request sql messages
+3. Query hanlder

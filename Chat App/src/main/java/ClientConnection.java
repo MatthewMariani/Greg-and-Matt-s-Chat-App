@@ -8,7 +8,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * ClientConnection
@@ -18,6 +20,8 @@ public class ClientConnection {
     BufferedInputStream streamInput;
     String protocol;
     boolean firstContact;
+    User user;
+    HttpReader lastRequest;
 
     public ClientConnection(Socket socket) {
         firstContact = true;
@@ -77,29 +81,27 @@ public class ClientConnection {
 
     public void sendWebpage(String webpagePath, HashMap<String, String> args) throws IOException
     {
+        if(args==null)
+            args = new HashMap<String, String>();
+        //addArgs(args);
         String content = Files.readString(Paths.get(webpagePath));
-        String header = "HTTP/1.0 200 OK\r\n"
-        +"Content-Type: text/html\r\n"
-        +"Content-Length: ";
+        String header = "HTTP/1.1 200 OK\r\n"
+        +"Content-Type: text/html\r\n";
+        AtomicReference<String> temp = new AtomicReference<String>();
+        
+        header+=temp.get();
+        header+="Content-Length: ";
         header+=content.length()+"\r\n";
-        for (Entry<String, String> string : args.entrySet()) {
-            header+=string.getKey()+": "+string.getValue()+"\r\n";
-        }
+        if(args.size()>0)
+            args.forEach((k,v) -> temp.set(k+": "+v+"\r\n"));
+        header+="Set-Cookie: yeet=yote\r\n";
         header+="\r\n";
         send(header+content);
         
     }
     public void sendWebpage(String webpagePath) throws IOException
     {
-        String content = Files.readString(Paths.get(webpagePath));
-        
-        String header = "HTTP/1.0 200 OK\r\n"
-        +"Content-Type: text/html\r\n"
-        +"Content-Length: ";
-        header+=content.length()+"\r\n";
-        header+="\r\n";
-
-        send(header+content);
+        sendWebpage(webpagePath, null);
         
     }
     public void sendICO(String webpagePath) throws IOException
@@ -116,5 +118,26 @@ public class ClientConnection {
         System.arraycopy(header.getBytes(), 0, output, 0, aLen);
         System.arraycopy(imageData, 0, output, aLen, bLen);
         send(output);
+    }
+    private void addArgs(HashMap<String,String> args)
+    {
+        // String cookie = lastRequest.headerContents.get("Cookie");
+        // String[] cookies = cookie.split("; ");
+        // Map<String,String> args1 = new HashMap<String, String>();
+        // for (String string : cookies) {
+        //     String[] temp = string.split("=");
+        //     args1.put(temp[0],temp[1]);
+        // }
+        args.put("Set-Cookies","yeetyeet=shrekwazowski");
+        // if(user!=null&&args1.containsKey("indentification")&&args1.get("indentification")!=user.getID())
+        //     args.put("indentification",user.getID());
+
+    }
+    public void setLastHttp(HttpReader in)
+    {
+        lastRequest = in;
+    }
+    public static void main(String[] args) {
+
     }
 }
