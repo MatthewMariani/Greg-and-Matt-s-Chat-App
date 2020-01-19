@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import backend.*;
 
 // work as medium for send/requesting info, handle new ones
 class SocketHandler implements Runnable {
@@ -78,7 +79,7 @@ class SocketHandler implements Runnable {
                        // System.out.println("COOKIE: "+message.getCookie("identification")); 
                         try{
                             System.out.println("COOKIE: "+message.getCookie("identification"));
-                            clientConnection.user=User.userBuilder(message.getCookie("identification"));
+                            clientConnection.user=backend.User.userBuilder(message.getCookie("identification"));
                         } catch(IOException e2) {clientConnection.user=null; System.out.println("failed");}
                         System.out.println(message.headerContents.get("URI"));
                         String req = message.headerContents.get("request");

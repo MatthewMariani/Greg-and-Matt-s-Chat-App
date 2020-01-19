@@ -1,4 +1,4 @@
-package webServer;
+package backend;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.ArrayList;
+import webServer.*;
 
 public class User
 {   
@@ -14,14 +15,14 @@ public class User
     private String ID;
     private Location location;
     private String accessLevel;
-    List<Cookie> cookies;
+    List<webServer.Cookie> cookies;
     //constructor
     public User(String uID, Location loc, String acLvl)
     {
         ID = uID;
         location = loc;
         accessLevel = acLvl;
-        cookies = new ArrayList<Cookie>();
+        cookies = new ArrayList<webServer.Cookie>();
         main.activeUsers.add(this);
 
     }

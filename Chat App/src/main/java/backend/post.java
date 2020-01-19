@@ -1,5 +1,5 @@
 
-package webServer;
+package backend;
 public class post
 {
     private String title;

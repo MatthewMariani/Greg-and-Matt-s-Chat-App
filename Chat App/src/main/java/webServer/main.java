@@ -10,21 +10,21 @@ import java.util.Map;
 import java.util.Scanner;
 
 //PRESS Q THEN ENTER IN CONSOLE TO KILL PROGRAM. KILLING TERMINAL IN VSCODE FIRST BREAKS VSCODE.
-class main {
+public class main {
     //public static ArrayList<Socket> currentSockets;
     //public static SocketHandler[] handlers;
     public static volatile ArrayList<ClientConnection> connectionBuffer;
     public static boolean running=true;
     public static volatile Map<String,String> URIDictionary;
     public static volatile Map<String,String> typeDictionary;
-    public static volatile List<User> activeUsers;
+    public static volatile List<backend.User> activeUsers;
     //public static volatile String test = "empty";
     public static void main(String[] args){
         //currentSockets= new ArrayList<Socket>();
         connectionBuffer=new ArrayList<ClientConnection>();
         URIDictionary = new HashMap<String,String>();
         typeDictionary = new HashMap<String,String>();
-        activeUsers = new ArrayList<User>();
+        activeUsers = new ArrayList<backend.User>();
 
 
         try {

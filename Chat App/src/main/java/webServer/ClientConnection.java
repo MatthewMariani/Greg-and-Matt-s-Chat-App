@@ -17,7 +17,7 @@ public class ClientConnection {
     BufferedInputStream streamInput;
     String protocol;
     boolean firstContact;
-    User user;
+    backend.User user;
     HttpReader lastRequest;
 
     public ClientConnection(Socket socket) {
