@@ -1,3 +1,6 @@
+package webServer;
+
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.HashMap;
@@ -42,6 +45,25 @@ public class HttpReader {
     //     String
     // }
     // just a temporary test to see if it parses correctly
+    public static String getCookie(String httpLine, String cookie) throws IOException
+    {
+        if(httpLine==null)
+            throw new IOException();
+        String[] cookies = httpLine.split("; ");
+        String out = "";
+        System.out.println("totalcookies"+Arrays.toString(cookies));
+        for (String string : cookies) {
+                out = string.split("=")[1];
+                System.out.println("VALUE: "+out);
+        }
+        if(out.length()<1)
+            throw new IOException();
+        return out;
+    }
+    public String getCookie(String cookie) throws IOException
+    {
+        return getCookie(headerContents.get("Cookie"),cookie);
+    }
     public static void main(String[] args) {
         String req = "GET / HTTP/1.1\r\n" + "Host: localhost:8009\r\n" + "Connection: keep-alive\r\n"
                 + "Cache-Control: max-age=0\r\n" + "Upgrade-Insecure-Requests: 1\r\n"

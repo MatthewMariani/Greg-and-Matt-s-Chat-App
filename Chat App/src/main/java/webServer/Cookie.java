@@ -1,3 +1,5 @@
+package webServer;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,11 +15,13 @@ public class Cookie {
     List<String> options;
 
     public Cookie(String name) {
-        this.name = name;
-        value = "";
-        options = new ArrayList<String>();
-    }
+        
+            this.name = name;
+            value = "";
+            options = new ArrayList<String>();
 
+    }
+    
     public String toString()
     {
         String out = "Set-Cookie: "+name+"="+value;

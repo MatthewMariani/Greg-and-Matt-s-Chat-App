@@ -1,10 +1,14 @@
+package webServer;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.ArrayList;
 
-
-   public class User
+public class User
 {   
     //instance variables
     private String ID;
@@ -18,9 +22,22 @@ import java.util.ArrayList;
         location = loc;
         accessLevel = acLvl;
         cookies = new ArrayList<Cookie>();
+        main.activeUsers.add(this);
 
     }
-
+    public User(String ID)
+    {
+        this.ID=ID;
+        main.activeUsers.add(this);
+    }
+    public static User userBuilder(String ID)
+    {
+        AtomicReference<User> targetUser = new AtomicReference<User>(null);
+        main.activeUsers.forEach((k) -> {if(k.getID()==ID){targetUser.set(k);}});
+        if(targetUser.get()==null)
+            targetUser.set(new User(ID));
+        return targetUser.get();
+    }
     //getters
     public String getID()
     {

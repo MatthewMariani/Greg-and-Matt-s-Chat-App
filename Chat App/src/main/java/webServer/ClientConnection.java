@@ -1,15 +1,12 @@
+package webServer;
+
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -85,6 +82,15 @@ public class ClientConnection {
             args = new HashMap<String, String>();
         //addArgs(args);
         String content = Files.readString(Paths.get(webpagePath));
+        System.out.println(user);
+        if(user!=null)
+            content=String.format(content, this.user.getID());
+        else
+        {
+            content=String.format(content, "new User");
+            content+="<script>document.cookie=\"indentification=\"+prompt(\"enter ID:\");</script>";
+        }
+        
         String header = "HTTP/1.1 200 OK\r\n"
         +"Content-Type: text/html\r\n";
         AtomicReference<String> temp = new AtomicReference<String>();
@@ -94,7 +100,8 @@ public class ClientConnection {
         header+=content.length()+"\r\n";
         if(args.size()>0)
             args.forEach((k,v) -> temp.set(k+": "+v+"\r\n"));
-        header+="Set-Cookie: yeet=yote\r\n";
+        if(user!=null)
+            header+="Set-Cookie: indentification="+user.getID()+"\r\n";
         header+="\r\n";
         send(header+content);
         

@@ -1,3 +1,5 @@
+package webServer;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
@@ -55,7 +57,7 @@ class SocketHandler implements Runnable {
         {
 
             //System.out.println("socket handler work:"+connections.size());
-            //dont remove this system.out.print("") below. It shouldn't break the program, but it does, for some odd reason. I tried to figure it out but I can't give up. 
+            //dont remove this system.out.print("") below. It shouldn't break the program, but it does, for some odd reason. I tried to figure it out but I gave up. 
             System.out.print("");
 
             for (ClientConnection clientConnection : connections) {
@@ -73,6 +75,11 @@ class SocketHandler implements Runnable {
                         String path = main.URIDictionary.get(message.headerContents.get("URI"));
                         if(path==null)
                             path=main.URIDictionary.get("ERROR");
+                       // System.out.println("COOKIE: "+message.getCookie("identification")); 
+                        try{
+                            System.out.println("COOKIE: "+message.getCookie("identification"));
+                            clientConnection.user=User.userBuilder(message.getCookie("identification"));
+                        } catch(IOException e2) {clientConnection.user=null; System.out.println("failed");}
                         System.out.println(message.headerContents.get("URI"));
                         String req = message.headerContents.get("request");
                         switch(req)
@@ -104,9 +111,9 @@ class SocketHandler implements Runnable {
 
             } catch (IOException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
-                System.out.println("diagnosis");
-            }
+                    e.printStackTrace();
+                    System.out.println("diagnosis");
+                }
             }
             connections.addAll(main.connectionBuffer);
             flushDeadConnections();

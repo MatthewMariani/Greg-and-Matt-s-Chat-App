@@ -1,9 +1,11 @@
+package webServer;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -15,12 +17,16 @@ class main {
     public static boolean running=true;
     public static volatile Map<String,String> URIDictionary;
     public static volatile Map<String,String> typeDictionary;
+    public static volatile List<User> activeUsers;
     //public static volatile String test = "empty";
     public static void main(String[] args){
         //currentSockets= new ArrayList<Socket>();
         connectionBuffer=new ArrayList<ClientConnection>();
         URIDictionary = new HashMap<String,String>();
         typeDictionary = new HashMap<String,String>();
+        activeUsers = new ArrayList<User>();
+
+
         try {
             Scanner URIputter = new Scanner(Paths.get("Chat App/files/manifest.txt"));
             while(URIputter.hasNextLine())
