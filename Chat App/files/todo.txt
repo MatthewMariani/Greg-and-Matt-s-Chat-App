@@ -1,0 +1,20 @@
+Todo List for Greg:
+
+1. fix odd multithreading behaviour
+    a. only works with println in SocketHandler.java
+    b. killing via vscode integrated terminal crash/hangs vscode
+2. Base message response of incoming request
+3. Add URI support for more webpages + security manifest
+4. non-GET HTTP message capability
+--- DONE ^ ---
+
+5. add https support
+4. Add websocket capability
+6. Add cookies < PROTOTYPED
+7. Add dynamic page scripting (PHP?) < PROTOTYPED
+
+---- ---- ----
+
+1. Learn SQL
+2. design SQL handler - buffer and request sql messages
+3. Query hanlder
