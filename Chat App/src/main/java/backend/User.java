@@ -1,12 +1,8 @@
 package backend;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.ArrayList;
 import webServer.*;
 
 public class User
@@ -29,7 +25,7 @@ public class User
     public User(String ID)
     {
         this.ID=ID;
-        main.activeUsers.add(this);
+        //main.activeUsers.add(this); //UNCOMMENT THIS LINE NOW
     }
     public static User userBuilder(String ID)
     {
