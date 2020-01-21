@@ -1,5 +1,5 @@
-package main.java;
 
+package backend;
 public class post
 {
     private String title;
@@ -7,7 +7,7 @@ public class post
     //date/time object? for date var
     //post-body?
     //attached-image?
-    private ID posterID;
+    private String posterID;
 
     //idea: include a toHTML function to format user posts
 }

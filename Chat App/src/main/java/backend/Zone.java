@@ -1,6 +1,7 @@
-package main.java;
 
-public class zone
+package backend;
+
+public class Zone
 {
     private String name; //or ID
     private int zip;
