@@ -40,5 +40,10 @@ public class MessageBuffer {
         return buffer.get(ID);
     }
 
+    public void createPost(User poster, String title, String content)
+    {
+        buffer.add(new Post(poster, title, content));
+    }
+
 
 }
