@@ -7,11 +7,11 @@ import java.time.Instant;
  */
 public class MessageBuffer {
 
-    ConcurrentListHash buffer;
+    ConcurrentListHashPost buffer;
     
     public MessageBuffer()
     {
-        buffer = new ConcurrentListHash();
+        buffer = new ConcurrentListHashPost();
     }
 
     public Post[] getFeed(Instant startingAge, int numPosts)

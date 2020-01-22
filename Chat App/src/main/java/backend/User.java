@@ -12,6 +12,8 @@ public class User
     private Location location;
     private String accessLevel;
     List<webServer.Cookie> cookies;
+    String userName;
+    Session session;
     //constructor
     public User(String uID, Location loc, String acLvl)
     {
@@ -20,6 +22,7 @@ public class User
         accessLevel = acLvl;
         cookies = new ArrayList<webServer.Cookie>();
         main.activeUsers.add(this);
+        this.userName=uID;
 
     }
     public User(String ID)
@@ -40,7 +43,10 @@ public class User
     {
         return ID;
     }
-
+    public String getName()
+    {
+        return this.userName;
+    }
     public Location getLocation()
     {
         return location;
