@@ -30,5 +30,8 @@ public class Cookie {
         out+=temp.get()+"\r\n";
         return out;
     }
-    
+    public String getName()
+    {
+        return name;
+    }
 }
