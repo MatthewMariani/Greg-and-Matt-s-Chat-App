@@ -85,12 +85,12 @@ class SocketHandler implements Runnable {
                         String req = message.headerContents.get("request");
                         switch(req)
                         {
-                            case "GET":
+                            case "GET": //handled by protocols 
                                 System.out.println("GET response to: "+clientConnection.toString());
                                 System.out.println(path);
                                 switch(main.typeDictionary.get(path))
                                 {
-                                    case "image/apng":
+                                    case "image/apng": //this crap should be handled in the send part
                                         clientConnection.sendICO(path);
                                         break;
                                     default:
@@ -102,7 +102,7 @@ class SocketHandler implements Runnable {
                                 break;
                             default:
                                 System.out.println("ERROR");
-                                clientConnection.sendWebpage("Chat App\\files\\404Error.html");
+                                clientConnection.sendWebpage(clientConnection.errorPage("501"));
                                 break;
                         }
                         //System.out.println("done2");
