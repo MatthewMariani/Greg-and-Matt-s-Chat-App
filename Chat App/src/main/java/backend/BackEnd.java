@@ -6,11 +6,12 @@ package backend;
 import java.util.ArrayList;
 
 public class BackEnd {
-    ArrayList<post> messageBuffer;
+    
+    
     public static void main(String[] args) {
         
     }
-    
+
     //make /s/ or whatever a scriptable part of the website, i.e. not predefined in the security manifest
     //what do I want for this
         //we take a user and return a feed

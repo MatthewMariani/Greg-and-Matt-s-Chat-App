@@ -19,7 +19,8 @@ public class ClientConnection {
     boolean firstContact;
     backend.User user;
     HttpReader lastRequest;
-
+    backend.Session session;
+//create a session
     public ClientConnection(Socket socket) {
         firstContact = true;
         this.socket = socket;
@@ -62,14 +63,14 @@ public class ClientConnection {
 
     }
 
-    public void send(String in) throws IOException 
+    public void send2(String in) throws IOException 
     {
         byte[] messageBlob = in.getBytes();
-        send(messageBlob);
+        send2(messageBlob);
         
     }
 
-    public void send(byte[] in) throws IOException
+    public void send2(byte[] in) throws IOException
     {
         socket.getOutputStream().write(in);
         socket.getOutputStream().flush();
@@ -81,7 +82,14 @@ public class ClientConnection {
         if(args==null)
             args = new HashMap<String, String>();
         //addArgs(args);
-        String content = Files.readString(Paths.get(webpagePath));
+        String content = "";
+
+        try {
+            content=Files.readString(Paths.get(webpagePath));
+        } catch(IOException e) {
+            content=errorPage("404");
+        }
+
         System.out.println(user);
         if(user!=null)
             content=String.format(content, this.user.getID());
@@ -103,7 +111,7 @@ public class ClientConnection {
         if(user!=null)
             header+="Set-Cookie: indentification="+user.getID()+"\r\n";
         header+="\r\n";
-        send(header+content);
+        send2(header+content);
         
     }
     public void sendWebpage(String webpagePath) throws IOException
@@ -116,7 +124,7 @@ public class ClientConnection {
         //File image = new File(webpagePath);
         byte[] imageData = Files.readAllBytes(Paths.get(webpagePath));
         String header = "HTTP/1.0 200 OK\r\n"
-        +"Content-Type: image/apng\r\n"
+        +"Content-Type: "+main.typeDictionary.get(webpagePath)+"\r\n"
         +"Content-Length: "+
         imageData.length+"\r\n\r\n";
         int aLen = header.length();
@@ -124,7 +132,25 @@ public class ClientConnection {
         byte[] output = new byte[aLen+bLen];
         System.arraycopy(header.getBytes(), 0, output, 0, aLen);
         System.arraycopy(imageData, 0, output, aLen, bLen);
-        send(output);
+        send2(output);
+    }
+    public void sendHTTP(String webpagePath) throws IOException
+    {
+        switch(main.typeDictionary.get(webpagePath))
+        {
+            case "image/apng":
+                sendICO(webpagePath);
+                break;
+            case "image/webp":
+                sendICO(webpagePath);
+                break;
+            case "text/html":
+                sendWebpage(webpagePath);
+                break;
+            
+                
+
+        }
     }
     private void addArgs(HashMap<String,String> args)
     {
@@ -146,5 +172,35 @@ public class ClientConnection {
     }
     public static void main(String[] args) {
 
+    }
+
+    public static String errorPage(String errorCode)
+    {   
+        String desc = "";
+        //is hardcoding really the best option here?
+        switch(errorCode)
+        {
+            case "404":
+                desc = "Page not found";
+                break;
+            case "403":
+                desc = "Forbidden";
+                break;
+            case "405":
+                desc = "Method Not Allowed";
+                break;
+            case "423":
+                desc = "Webpage Locked";
+                break;
+            case "429":
+                desc = "Too Many Requests";
+                break;
+            case "501":
+                desc = "Method Not Implemented";
+                break;
+                
+        }
+        String out = "<!doctype html>\n\n<html lang=\"en\"\n<head>\n<meta charset=\"utf-8\">\n<title>"+errorCode+" "+desc+"</title>\n</head>\n<body><h1>Error "+errorCode+"</h1>\n<p>"+desc+"</p>\n</body>\n</html>";
+        return out;
     }
 }
